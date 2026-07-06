@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://extreme-robot.local/schemas/mission.json",
+  "title": "Mission JSON (극한로봇 LLM 인터페이스 출력 계약)",
+  "description": "LLM 미션 인터페이스가 ROS2 bridge 로 넘기는 최종 출력. 어떤 입력에도 이 구조를 항상 지킨다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "status",
+    "mission_name",
+    "action",
+    "target_refs",
+    "constraints",
+    "room_order",
+    "goal_pose",
+    "error"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "request_id": {
+      "type": "string",
+      "description": "요청마다 새로 발급되는 UUID"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "partial", "error"]
+    },
+    "mission_name": {
+      "type": ["string", "null"],
+      "enum": [
+        "press_purifier_button",
+        "count_fire_targets",
+        "open_door",
+        "fire_response_sequence",
+        "deliver_relief_item",
+        "inspect_rescue_rooms",
+        "go_to_finish",
+        "rescue_sequence",
+        null
+      ]
+    },
+    "action": {
+      "type": ["string", "null"],
+      "description": "MISSION_SPEC 로 고정되는 값. LLM 이 준 값은 무시된다."
+    },
+    "target_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "MISSION_SPEC 로 고정되는 값. LLM 이 준 값은 무시된다."
+    },
+    "constraints": {
+      "type": "object",
+      "description": "미션별 고정 실행 제약. 코드가 결정(LLM 무시). 예: use_existing_object_only, keep_relief_item_until_finish.",
+      "additionalProperties": { "type": "boolean" }
+    },
+    "room_order": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "방 순회 순서. 코드가 결정(LLM 무시). 해당 없으면 []."
+    },
+    "goal_pose": {
+      "type": ["object", "null"],
+      "description": "semantic map / object DB 가 주입. 없으면 null 이고 status 는 partial.",
+      "additionalProperties": false,
+      "required": ["frame_id", "x", "y", "yaw"],
+      "properties": {
+        "frame_id": { "type": "string" },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "yaw": { "type": "number" }
+      }
+    },
+    "error": {
+      "type": ["object", "null"],
+      "description": "status 가 partial/error 이면 채워지고, ok 이면 null.",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "GOAL_POSE_UNRESOLVED",
+            "UNSUPPORTED_OR_AMBIGUOUS_COMMAND",
+            "LLM_OUTPUT_UNPARSEABLE",
+            "LLM_CALL_FAILED",
+            "INVALID_REQUEST",
+            "INTERNAL_ERROR"
+          ]
+        },
+        "message": { "type": "string" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "ok" } } },
+      "then": {
+        "properties": {
+          "error": { "type": "null" },
+          "goal_pose": { "type": "object" },
+          "mission_name": { "type": "string" }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "error" } } },
+      "then": {
+        "properties": {
+          "error": { "type": "object" },
+          "goal_pose": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "partial" } } },
+      "then": {
+        "properties": {
+          "error": { "type": "object" },
+          "mission_name": { "type": "string" }
+        }
+      }
+    }
+  ]
+}

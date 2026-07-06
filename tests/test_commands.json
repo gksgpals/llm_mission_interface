@@ -1,0 +1,51 @@
+{
+  "description": "명령 표현 변형 → 기대 mission_name 매핑. 동의어 분류 정확도 및 mock 백엔드 회귀 테스트용. expected_mission=null 은 미지원(모호) 명령.",
+  "cases": [
+    { "text": "공기정화 버튼을 눌러.", "expected_mission": "press_purifier_button" },
+    { "text": "환풍 장치를 켜.", "expected_mission": "press_purifier_button" },
+    { "text": "연기 제거 장치를 작동시켜.", "expected_mission": "press_purifier_button" },
+    { "text": "공기를 정화해.", "expected_mission": "press_purifier_button" },
+    { "text": "정화 시스템 버튼 눌러줘.", "expected_mission": "press_purifier_button" },
+
+    { "text": "화재가 몇 개인지 세.", "expected_mission": "count_fire_targets" },
+    { "text": "불이 몇 군데 났는지 확인해.", "expected_mission": "count_fire_targets" },
+    { "text": "화재 규모를 알려줘.", "expected_mission": "count_fire_targets" },
+    { "text": "화재 타겟 개수를 파악해.", "expected_mission": "count_fire_targets" },
+
+    { "text": "문을 열어.", "expected_mission": "open_door" },
+    { "text": "출입문 개방해.", "expected_mission": "open_door" },
+    { "text": "도어를 열어줘.", "expected_mission": "open_door" },
+    { "text": "문 밀어서 열어.", "expected_mission": "open_door" },
+
+    { "text": "화재 대응 시퀀스를 실행해.", "expected_mission": "fire_response_sequence" },
+    { "text": "화재 진압 전체 미션 수행해.", "expected_mission": "fire_response_sequence" },
+    { "text": "화재 구간 처음부터 끝까지 해.", "expected_mission": "fire_response_sequence" },
+
+    { "text": "구호 물품을 가져다줘.", "expected_mission": "deliver_relief_item" },
+    { "text": "구호물자를 운반해.", "expected_mission": "deliver_relief_item" },
+    { "text": "구조 물품을 배달해.", "expected_mission": "deliver_relief_item" },
+    { "text": "구호품을 옮겨.", "expected_mission": "deliver_relief_item" },
+
+    { "text": "방들을 점검해서 구조 요구자를 찾아.", "expected_mission": "inspect_rescue_rooms" },
+    { "text": "각 방에 사람이 있는지 확인해.", "expected_mission": "inspect_rescue_rooms" },
+    { "text": "인명 구조 순찰해.", "expected_mission": "inspect_rescue_rooms" },
+    { "text": "생존자 있는지 방을 조사해.", "expected_mission": "inspect_rescue_rooms" },
+
+    { "text": "피니시 라인으로 가.", "expected_mission": "go_to_finish" },
+    { "text": "결승선까지 이동해.", "expected_mission": "go_to_finish" },
+    { "text": "종료 지점으로 가.", "expected_mission": "go_to_finish" },
+    { "text": "FINISH 로 이동해.", "expected_mission": "go_to_finish" },
+
+    { "text": "재난 구조 시퀀스를 실행해.", "expected_mission": "rescue_sequence" },
+    { "text": "구조 구간 전체 미션 수행해.", "expected_mission": "rescue_sequence" },
+    { "text": "인명 구조 전체 과정을 해.", "expected_mission": "rescue_sequence" },
+
+    { "text": "공기정화 버튼을 누르고 화재 타겟 개수를 확인한 뒤 문을 열어.", "expected_mission": "fire_response_sequence" },
+    { "text": "구호물품을 들고 방 1, 2, 3을 탐색한 뒤 finish로 이동해.", "expected_mission": "rescue_sequence" },
+
+    { "text": "커피 한 잔 타줘.", "expected_mission": null },
+    { "text": "노래 좀 틀어줘.", "expected_mission": null },
+    { "text": "오늘 날씨 어때?", "expected_mission": null },
+    { "text": "안녕 반가워.", "expected_mission": null }
+  ]
+}

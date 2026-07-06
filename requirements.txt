@@ -1,0 +1,19 @@
+# llm_mission_interface 실행에 필요한 파이썬 패키지
+#
+# 핵심 원칙: 런타임은 "표준 라이브러리만"으로 동작한다.
+#   → AGX(Jetson)에서 pip 설치 없이 바로 구동 가능 (python3 만 있으면 됨).
+#   → HTTP 서버(http.server), JSON, subprocess, urllib 모두 stdlib.
+#
+# 아래는 전부 "선택(optional)" 이며, 없어도 서비스/테스트가 동작한다.
+
+# [선택] mission_schema.json 을 이용한 엄격한 JSON Schema 검증을 하고 싶을 때
+# jsonschema>=4.0
+
+# [선택] pytest 로 테스트를 돌리고 싶을 때 (기본은 stdlib unittest 로 충분)
+# pytest>=7.0
+
+# ---------------------------------------------------------------------------
+# 파이썬 패키지가 아닌 외부 구성요소 (pip 대상 아님):
+#   - Llama 모델 실행:  llama.cpp (llama-cli / llama-server) 를 AGX 에 별도 빌드/설치
+#   - 모델 가중치:      *.gguf (예: Llama-3.2-1B-Instruct-Q4_K_M.gguf 등)
+# 설정은 환경변수로 주입한다. README.md 의 "실행" 절 참고.
